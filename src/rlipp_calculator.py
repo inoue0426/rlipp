@@ -38,7 +38,7 @@ class RLIPPCalculator():
 			self.drug_count = len(self.drugs)
 			
 		#Uncomment it if the gene hidden files don't exist
-		#self.create_gene_hidden_files()
+		self.create_gene_hidden_files()
 
 
 	# Create hidden files for all genes which are just their mutation values
@@ -127,13 +127,9 @@ class RLIPPCalculator():
 	#Executes 5-fold cross validated Ridge regression for a given hidden features matrix
 	#and returns the spearman correlation value of the predicted output
 	def exec_lm(self, X, y):
-
-		pca = PCA(n_components=self.num_hiddens_genotype)
-		X_pca = pca.fit_transform(X)
-
-		regr = RidgeCV(cv=5)
-		regr.fit(X_pca, y)
-		y_pred = regr.predict(X_pca)
+		regr = RidgeCV(cv=3)
+		regr.fit(X, y)
+		y_pred = regr.predict(X)
 		return stats.spearmanr(y_pred, y)
 
 
